@@ -9,7 +9,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -25,3 +24,13 @@ jobs:
     - name: Render notebook
       run: |
         jupyter nbconvert a_star_study.ipynb --to html --output a_star_study.html
+        
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v5
+      with:
+        author_name: Gabriel Nativel-Fontaine
+        author_email: gabriel.nativelfontaine@gmail.com
+        message: "Updated notebook render :genie:"
+        add: "*.html"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
