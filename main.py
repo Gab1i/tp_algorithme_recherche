@@ -6,10 +6,8 @@ __usage__ = "Main algorithm"
 __version__ = "1.0"
 __update__ = "20-10-24"
 
-from math import sqrt
-
-from ProblemTaquin import ProblemTaquin
-from Search import aStarSearch
+from search.ProblemTaquin import ProblemTaquin
+from search.Search import aStarSearch
 
 problemTaquin = ProblemTaquin('38261574-', '12345678-')
 result = aStarSearch(problemTaquin)

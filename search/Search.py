@@ -2,15 +2,14 @@
 # -*- coding: utf-8 -*-
 __author__ = "Gabriel Nativel-Fontaine"
 __date__ = "20-10-20"
-__usage__ = "Class for A* algorithm"
-__version__ = "1.0"
-__update__ = "20-10-20"
+__usage__ = "Collection of search algorithms"
+__version__ = "2.0"
+__update__ = "25-10-2020"
 
 from search.SearchHistory import SearchHistory
-from search.SearchNode import SearchNode
 
 
-def aStarSearch(problem):
+def aStarSearch(problem, heuristic):
     history = SearchHistory()
 
     # initialize lists
@@ -65,3 +64,11 @@ def aStarSearch(problem):
 
     history.SetPath(path)
     return history
+
+
+def breadthFirstSearch(problem, heuristic):
+    pass
+
+
+def ipa_star(problem, heuristic):
+    pass
