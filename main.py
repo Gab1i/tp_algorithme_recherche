@@ -13,4 +13,3 @@ problemTaquin = ProblemTaquin('38261574-', '12345678-')
 result = aStarSearch(problemTaquin)
 print(result)
 print(result.Path)
-

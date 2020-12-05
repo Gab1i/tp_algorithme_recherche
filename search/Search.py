@@ -18,7 +18,8 @@ def aStarSearch(problem, heuristic):
 
     current = problem.Start
     marked = [current]
-    current.setH(problem.SetHeuristic(current))
+    current.setH(heuristic(current, problem._end))
+    #current.setH(problem.SetHeuristic(current))
 
     history.StartRecording()
     while (len(openedList) > 0) and not any(problem.isEnd(x) for x in closedList):
@@ -43,7 +44,7 @@ def aStarSearch(problem, heuristic):
         for child in children:
             child.Parent = current
             child.setG(current.G + 1)
-            child.setH(problem.SetHeuristic(child))
+            child.setH(heuristic(child, problem._end))
 
             if child not in marked:
                 marked.append(child)
