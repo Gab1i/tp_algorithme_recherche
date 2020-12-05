@@ -14256,10 +14256,10 @@ a.anchor-link {
     </script>
     <!-- End of mathjax configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">search.Problem</span> <span class="kn">import</span> <span class="n">Problem</span>
@@ -14269,33 +14269,6 @@ a.anchor-link {
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-19-ea0c722b272d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">from</span> search<span class="ansi-blue-fg">.</span>Problem <span class="ansi-green-fg">import</span> Problem
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">from</span> search<span class="ansi-blue-fg">.</span>Search <span class="ansi-green-fg">import</span> aStarSearch<span class="ansi-blue-fg">,</span> breadthFirstSearch<span class="ansi-blue-fg">,</span> ipa_star
-
-<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;breadthFirstSearch&#39; from &#39;search.Search&#39; (/Users/gabrielnativel-fontaine/Documents/Cours/Algorithmes de recherche/tp-ameliore/search/Search.py)</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -14314,23 +14287,43 @@ Cette algorithme repose sur deux éléments importants:</p>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Formalisation-du-probl&#232;me">Formalisation du probl&#232;me<a class="anchor-link" href="#Formalisation-du-probl&#232;me">&#182;</a></h2><p>Il est nécessaire de réfléchir à la formalisation du problème que l'on souhaite résoudre.</p>
-<h3 id="Le-taquin">Le taquin<a class="anchor-link" href="#Le-taquin">&#182;</a></h3><p>lorem ipsum...</p>
-<h3 id="Un-probl&#232;me-fantastique">Un probl&#232;me fantastique<a class="anchor-link" href="#Un-probl&#232;me-fantastique">&#182;</a></h3><p>...</p>
+<h3 id="La-tour-de-Hano&#239;">La tour de Hano&#239;<a class="anchor-link" href="#La-tour-de-Hano&#239;">&#182;</a></h3><p>Prenons le jeu de la tour de Hanoï et essayons de le modéliser afin de la résoudre à l'aide de l'algorithme A*.
+Le principe est simple, on dispose de trois emplacements qui peuvent accueillir des disques de tailles différentes. Il faut déplacer la tour de gauche sur l'emplacement de droite avec le moins de coups possibles. Chaque disque ne peut être posé que sur un disque de diamètre supérieur au sien.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">UnProblem</span><span class="p">(</span><span class="n">Problem</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="k">class</span> <span class="nc">Hanoi</span><span class="p">(</span><span class="n">Problem</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))],</span> <span class="p">[],</span> <span class="p">[]]</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="p">[[],</span> <span class="p">[],</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))]]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">_buildNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev</span><span class="p">):</span>
-        <span class="k">pass</span>
-    
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">board</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">prev</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">piece</span> <span class="o">=</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                
+                <span class="n">possible_moves</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+                <span class="n">possible_moves</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">possible_moves</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">board</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">piece</span><span class="p">:</span>
+                        <span class="n">next_board</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+                        <span class="n">next_board</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
+                        <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_board</span><span class="p">)</span>
+                
+        <span class="k">return</span> <span class="n">children</span>    
 </pre></div>
 
      </div>
@@ -14343,14 +14336,14 @@ Cette algorithme repose sur deux éléments importants:</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Heuristique">Heuristique<a class="anchor-link" href="#Heuristique">&#182;</a></h2><p>Une heuristique est une fonction qui, pour un noeud donné, donne le coût permettant d'atteindre le noeud but.</p>
 <p>On dit d'une heuristique qu'elle est <strong>admissible</strong> lorsqu'elle est inférieure ou égale au coût réel pour se rendre au but.
-On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou monotone) lorsque, pour chaque nœud n et chaque successeur n’ de n produit par n’importe quelle action, le coût estimé pour atteindre le but à partir de n n’est pas supérieur au coût de l’étape pour aller à n’ plus le coût estimé pour atteindre le but à partir de n’.</p>
+On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou monotone) lorsque, pour chaque nœud $n$ et chaque successeur $n’$ de $n$ produit par n’importe quelle action, le coût estimé pour atteindre le but à partir de $n$ n’est pas supérieur au coût de l’étape pour aller à $n’$ plus le coût estimé pour atteindre le but à partir de $n’$.</p>
 <p>Tout l'art des algorithmes de recherche réside dans le développement d'heuristiques admissibles et consistantes afin de préserver l'optimalité de l'algorithme.</p>
 <p>L'utilisation de certaines heuristiques dites triviales équivaut à l'utilisation d'algorithmes de recherches dérivés:</p>
 <ul>
 <li>Si $f(n) = g(n)$: algorithme du coût uniforme, qui équivaut à une exploration en largeur d'abord lorsque les coûts pour passer d'un noeud parent à un noeud fils sont égaux (Breadth First Search)</li>
 <li>Si $h(n) = 0 \Rightarrow f(n) = g(n)$: algorithme glouton (Best first search)</li>
 </ul>
-<p>Créons une heuristique pour notre problème :</p>
+<p>Créons une heuristique pour notre problème. Commençons simplement par poser $h(n) = 0$, de cette façon, l'algorithme agira comme un algorithme glouton et va tester toutes les possibilités en parcourant le graphe des coups en largeur. On trouvera ainsi assurément la solution la plus courte (en nombre de coups) mais au détriment du temps de recherche.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -14359,8 +14352,8 @@ On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">heuristic</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-    <span class="k">pass</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">heuristic</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">0</span>
 </pre></div>
 
      </div>
@@ -14374,14 +14367,15 @@ On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou
 <h2 id="R&#233;solution">R&#233;solution<a class="anchor-link" href="#R&#233;solution">&#182;</a></h2><p>Voyons le résultat de notre algorithme</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">UnProblem</span><span class="p">(</span><span class="s1">&#39;debut&#39;</span><span class="p">,</span> <span class="s1">&#39;fin&#39;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">aStarSearch</span><span class="p">(</span><span class="n">problemTaquin</span><span class="p">,</span> <span class="n">heuristic</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">Hanoi</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">aStarSearch</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">heuristic</span><span class="p">)</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 
@@ -14390,19 +14384,48 @@ On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Solution found in 0.051723000000000074 seconds
+Length of the solution: 31
+Nodes opened: 233
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Une-autre-heuristique-?">Une autre heuristique ?<a class="anchor-link" href="#Une-autre-heuristique-?">&#182;</a></h2>
+<p>On voit donc que l'algorithme a trouvé le chemin le plus court (le jeu de la tour de Hanoï est bien connu, il est admis que la tour de Hanoïe à 5 disques ne peut se résoudre en moins de 31 mouvements).</p>
+<p>En cherchant la solution, l'algorithme a parcouru 233 noeuds du graphes des coups jouables.</p>
+<h2 id="Une-autre-heuristique-?">Une autre heuristique ?<a class="anchor-link" href="#Une-autre-heuristique-?">&#182;</a></h2><p>Cherchons maintenant une heuristique un peu plus intelligente pour estimer la distance entre un noeud et le noeud que l'on cherche à atteindre.</p>
+<p>On peut admettre que le nombre de coup qu'il reste à jouer est inférieur au nombre de pièces sur la position 3</p>
+<p>Posons donc $h(n) = 5 - \textit{nb_pieces_en_3}$</p>
+<p>Ceci est une heuristique admissible, en effet, lorsqu'il ne reste plus qu'une seule pièce à déplacer l'heuristique proposée est égale au coût réel de déplacement. Lorsqu'il reste plus d'une pièce à déplacer, l'heuristique proposée est toujours inférieure au nombre de déplacement réel du fait de la mécanisme de déplacement ; un disque étant toujours posé sur un disque de diamètre plus grand, pour déplacer $n$ pièces, il faudra toujours plus de $n$ mouvements.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">heuristicAutre</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-    <span class="k">pass</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">wrong_place_heuristic</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">5</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">Value</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -14410,13 +14433,13 @@ On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result2</span> <span class="o">=</span> <span class="n">aStarSearch</span><span class="p">(</span><span class="n">problemTaquin</span><span class="p">,</span> <span class="n">heuristicAutre</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result2</span> <span class="o">=</span> <span class="n">aStarSearch</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">wrong_place_heuristic</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result2</span><span class="p">)</span>
 </pre></div>
 
@@ -14425,86 +14448,211 @@ On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Afficher le comparatif entre les deux heuristiques</span>
-</pre></div>
+<div class="jp-Cell-outputWrapper">
 
-     </div>
-</div>
-</div>
-</div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Comparaison-avec-d'autres-algorithmes">Comparaison avec d'autres algorithmes<a class="anchor-link" href="#Comparaison-avec-d'autres-algorithmes">&#182;</a></h2><h3 id="Recherche-en-largeur-d'abord">Recherche en largeur d'abord<a class="anchor-link" href="#Recherche-en-largeur-d'abord">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result_bfs</span> <span class="o">=</span> <span class="n">breadthFirstSeach</span><span class="p">(</span><span class="n">problemTaquin</span><span class="p">,</span> <span class="n">heuristicAutre</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result_bfs</span><span class="p">)</span>
-</pre></div>
+<div class="jp-OutputArea jp-Cell-outputArea">
 
-     </div>
-</div>
-</div>
-</div>
+<div class="jp-OutputArea-child">
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Recherche-avec-co&#251;t-uniforme">Recherche avec co&#251;t uniforme<a class="anchor-link" href="#Recherche-avec-co&#251;t-uniforme">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result_uc</span> <span class="o">=</span> <span class="n">uniformCostSeach</span><span class="p">(</span><span class="n">problemTaquin</span><span class="p">,</span> <span class="n">heuristicAutre</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result_uc</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Aller-plus-loin-avec-A*">Aller plus loin avec A*<a class="anchor-link" href="#Aller-plus-loin-avec-A*">&#182;</a></h2><h3 id="Step-A*">Step A*<a class="anchor-link" href="#Step-A*">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">steps</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">final_path</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="n">start</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
-    <span class="n">tmp_problem</span> <span class="o">=</span> <span class="n">UnProblem</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
-    <span class="n">tmp_result</span> <span class="o">=</span> <span class="n">aStarSearch</span><span class="p">(</span><span class="n">problemTaquin</span><span class="p">,</span> <span class="n">heuristicAutre</span><span class="p">)</span>
     
-    <span class="n">final_path</span><span class="o">.</span><span class="n">extends</span><span class="p">(</span><span class="n">tmp_result</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">step</span>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Solution found in 0.03436000000000006 seconds
+Length of the solution: 31
+Nodes opened: 178
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>On s'aperçoit qu'avec une heuristique plus "intelligente", l'algorithme présente de bien meilleur performance, il a parcouru 76% de noeuds en moins pour trouver la solution optimale en moins de temps.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Encore-un-probl&#232;me">Encore un probl&#232;me<a class="anchor-link" href="#Encore-un-probl&#232;me">&#182;</a></h2><p>Le jeu de la tour de Hanoï est un problème extrêmement simple et peut même être résolu rapidement par des algorithmes récursifs, mais il permet de tester l'efficacité des algorithmes de recherche.</p>
+<p>Testons maintenant notre algorithme sur un problème régulièrement utilisé dans le domaine des jeux vidéos : la recherche de chemin dans un labyrinthe.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Maze</span><span class="p">(</span><span class="n">Problem</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maze</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maze</span> <span class="o">=</span> <span class="n">maze</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_buildNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prev</span><span class="p">):</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">prev</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+            <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+            <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+            <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+            <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">children</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Dans ce cas, l'heuristique la plus simple reste la distance entre les deux points. On peut utiliser la distance euclidienne, ou la distance de manhattan qui donnerait la distance exacte s'il n'y avait pas les obstacles.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">euclidian_heuristic</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">Value</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">goal</span><span class="o">.</span><span class="n">Value</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">manhattan_heuristic</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">Value</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">goal</span><span class="o">.</span><span class="n">Value</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_maze</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;  ####    &#39;</span><span class="p">,</span>
+    <span class="s1">&#39;     #   A&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;  #  # # #&#39;</span><span class="p">,</span>
+    <span class="s1">&#39; ###   # #&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;D  ##  ###&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;    ##    &#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">maze_problem</span> <span class="o">=</span> <span class="n">Maze</span><span class="p">(</span><span class="n">my_maze</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result3</span> <span class="o">=</span> <span class="n">aStarSearch</span><span class="p">(</span><span class="n">maze_problem</span><span class="p">,</span> <span class="n">euclidian_heuristic</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result3</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Solution found in 0.001072000000000184 seconds
+Length of the solution: 16
+Nodes opened: 28
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result4</span> <span class="o">=</span> <span class="n">aStarSearch</span><span class="p">(</span><span class="n">maze_problem</span><span class="p">,</span> <span class="n">manhattan_heuristic</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result4</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Solution found in 0.0009369999999999656 seconds
+Length of the solution: 16
+Nodes opened: 27
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -14514,26 +14662,6 @@ On dit également d'une heuristique qu'elle est <strong>consistante</strong> (ou
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="IPA*">IPA*<a class="anchor-link" href="#IPA*">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">result_ipa</span> <span class="o">=</span> <span class="n">ipaStarSeach</span><span class="p">(</span><span class="n">problemTaquin</span><span class="p">,</span> <span class="n">heuristicAutre</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result_ipa</span><span class="p">)</span>
 </pre></div>
 
      </div>
